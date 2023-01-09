@@ -183,10 +183,17 @@ function Main() {
 			.post(`${url}get-non-course-events`)
 			.then((res) => {
 				setResponseDisplay(res.data.results.bindings);
-				enqueueSnackbar("Events were received", {
-					variant: "success",
-					anchorOrigin: { horizontal: "right", vertical: "top" },
-				});
+				if (res.data.results.bindings.length > 0) {
+					enqueueSnackbar("Events were received", {
+						variant: "success",
+						anchorOrigin: { horizontal: "right", vertical: "top" },
+					});
+				} else {
+					enqueueSnackbar("No information were found", {
+						variant: "error",
+						anchorOrigin: { horizontal: "right", vertical: "top" },
+					});
+				}
 			})
 			.catch((err) => {
 				console.error(err);
