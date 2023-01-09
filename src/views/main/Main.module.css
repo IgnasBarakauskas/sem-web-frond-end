@@ -1,0 +1,67 @@
+.body {
+	display: flex;
+	flex-direction: column;
+	background-color: #010409;
+	width: 100vw;
+	height: 100vh;
+	color: #c9d1d9 !important;
+	overflow: auto;
+}
+.blockElementsContainer {
+	display: flex;
+	justify-content: space-around;
+	min-height: 40vh;
+	width: 100%;
+	margin: 32px 0;
+}
+.elementContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border: 2px solid #c9d1d9;
+	border-radius: 8px;
+}
+.elementContainer__send {
+	width: 20%;
+	height: 100%;
+}
+.elementContainer__receive {
+	width: 45%;
+	height: 100%;
+}
+.elementContainer__title {
+	font-size: 24px;
+	font-weight: normal;
+	padding: 16px;
+}
+.elementContainer__body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+.divider {
+	height: 1px;
+	background-color: #c9d1d9;
+	width: 95%;
+}
+.inputContainer {
+	display: flex;
+	justify-content: center;
+	padding: 32px 0;
+	width: 90%;
+}
+.receivedData {
+	margin: 32px auto;
+	width: 94%;
+	padding: 16px;
+	border: 2px solid #c9d1d9;
+	border-radius: 8px;
+}
+.resultsURI {
+	display: block;
+	color: #c9d1d9 !important;
+	text-decoration: none;
+}
