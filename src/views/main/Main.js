@@ -445,7 +445,7 @@ function Main() {
 									<TextField
 										fullWidth
 										id="outlined-basic"
-										label="URI of event resource"
+										label="URI of event(s) location"
 										value={eventSameAsURI}
 										variant="outlined"
 										onChange={handleEventSameAsURI}
