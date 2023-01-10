@@ -283,7 +283,7 @@ function Main() {
 		<div className={styles.body}>
 			<div className={styles.blockElementsContainer}>
 				<div className={`${styles.elementContainer} ${styles.elementContainer__send}`}>
-					<div className={styles.elementContainer__title}>Download file. Create and upload resource</div>
+					<div className={styles.elementContainer__title}>Download, create & upload resource(s)</div>
 					<div className={styles.divider} />
 					<ThemeProvider theme={theme}>
 						<div className={styles.elementContainer__body}>
@@ -291,7 +291,7 @@ function Main() {
 								<TextField
 									fullWidth
 									id="outlined-basic"
-									label="URL from where file should be downloaded"
+									label="CPS2 ICS file URL"
 									value={downloadUrl}
 									variant="outlined"
 									onChange={handleDownloadUrl}
@@ -306,7 +306,9 @@ function Main() {
 					</ThemeProvider>
 				</div>
 				<div className={`${styles.elementContainer} ${styles.elementContainer__send}`}>
-					<div className={styles.elementContainer__title}>Read file. Create and upload resource</div>
+					<div className={styles.elementContainer__title}>
+						Read existing ICS file, re-create & re-upload resource(s)
+					</div>
 					<div className={styles.divider} />
 					<ThemeProvider theme={theme}>
 						<div className={styles.elementContainer__body}>
@@ -319,7 +321,9 @@ function Main() {
 					</ThemeProvider>
 				</div>
 				<div className={`${styles.elementContainer} ${styles.elementContainer__send}`}>
-					<div className={styles.elementContainer__title}>Extract events by city name</div>
+					<div className={styles.elementContainer__title}>
+						Extract city events from alentoor, create & upload resource(s)
+					</div>
 					<div className={styles.divider} />
 					<ThemeProvider theme={theme}>
 						<div className={styles.elementContainer__body}>
@@ -327,7 +331,7 @@ function Main() {
 								<TextField
 									fullWidth
 									id="outlined-basic"
-									label="City name from which events should be scraped"
+									label="City name"
 									value={cityName}
 									variant="outlined"
 									onChange={handleCityName}
@@ -377,14 +381,14 @@ function Main() {
 			</div>
 			<div className={styles.blockElementsContainer}>
 				<div className={`${styles.elementContainer} ${styles.elementContainer__receive}`}>
-					<div className={styles.elementContainer__title}>Get events of specific date</div>
+					<div className={styles.elementContainer__title}>Find events by date</div>
 					<div className={styles.divider} />
 					<ThemeProvider theme={theme}>
 						<div className={styles.elementContainer__body}>
 							<div className={styles.inputContainer}>
 								<DesktopDatePicker
 									inputFormat="DD/MM/YYYY"
-									label="Enter date for which you are searching events"
+									label="Date"
 									renderInput={(params) => <TextField fullWidth {...params} />}
 									value={eventDate}
 									onChange={handleEventDate}
@@ -399,7 +403,7 @@ function Main() {
 					</ThemeProvider>
 				</div>
 				<div className={`${styles.elementContainer} ${styles.elementContainer__receive}`}>
-					<div className={styles.elementContainer__title}>Get all non course events</div>
+					<div className={styles.elementContainer__title}>Find non course events</div>
 					<div className={styles.divider} />
 					<ThemeProvider theme={theme}>
 						<div className={styles.elementContainer__body}>
