@@ -96,14 +96,14 @@ function Main() {
 	};
 	const handleExecuteDownload = () => {
 		setResponseDisplay("");
-		enqueueSnackbar("Download has started", {
+		enqueueSnackbar("Download started", {
 			variant: "info",
 			anchorOrigin: { horizontal: "right", vertical: "top" },
 		});
 		axios
 			.post(`${url}download`, downloadUrl)
 			.then(() => {
-				enqueueSnackbar("Download was successfull", {
+				enqueueSnackbar("Download completed", {
 					variant: "success",
 					anchorOrigin: { horizontal: "right", vertical: "top" },
 				});
@@ -118,14 +118,14 @@ function Main() {
 	};
 	const handleExecuteRead = () => {
 		setResponseDisplay("");
-		enqueueSnackbar("Reading has started", {
+		enqueueSnackbar("Reading started", {
 			variant: "info",
 			anchorOrigin: { horizontal: "right", vertical: "top" },
 		});
 		axios
 			.get(`${url}read`)
 			.then(() => {
-				enqueueSnackbar("Reading was successfull", {
+				enqueueSnackbar("Reading completed", {
 					variant: "success",
 					anchorOrigin: { horizontal: "right", vertical: "top" },
 				});
@@ -140,14 +140,14 @@ function Main() {
 	};
 	const handleExecuteScrape = () => {
 		setResponseDisplay("");
-		enqueueSnackbar("Scrape has started", {
+		enqueueSnackbar("Scraping started", {
 			variant: "info",
 			anchorOrigin: { horizontal: "right", vertical: "top" },
 		});
 		axios
 			.post(`${url}extract`, cityName)
 			.then(() => {
-				enqueueSnackbar("Scrape was successfull", {
+				enqueueSnackbar("Scraping completed", {
 					variant: "success",
 					anchorOrigin: { horizontal: "right", vertical: "top" },
 				});
@@ -162,7 +162,7 @@ function Main() {
 	};
 	const handleExecuteAddAttendee = () => {
 		setResponseDisplay("");
-		enqueueSnackbar("User addition has started", {
+		enqueueSnackbar("User addition started", {
 			variant: "info",
 			anchorOrigin: { horizontal: "right", vertical: "top" },
 		});
@@ -184,7 +184,7 @@ function Main() {
 	};
 	const handleExecuteSameAs = () => {
 		setResponseDisplay("");
-		enqueueSnackbar("Started searching for identical events", {
+		enqueueSnackbar("Started searching for same events", {
 			variant: "info",
 			anchorOrigin: { horizontal: "right", vertical: "top" },
 		});
@@ -198,12 +198,12 @@ function Main() {
 				if (res.data !== "No events found") {
 					const data = res.data.replace("[", "").replace("]", "").split(", ");
 					setResponseDisplay(data);
-					enqueueSnackbar("Identical events were received", {
+					enqueueSnackbar("Same events linked and retrieved", {
 						variant: "success",
 						anchorOrigin: { horizontal: "right", vertical: "top" },
 					});
 				} else {
-					enqueueSnackbar("Identical events was not found", {
+					enqueueSnackbar("No same events found", {
 						variant: "error",
 						anchorOrigin: { horizontal: "right", vertical: "top" },
 					});
@@ -211,7 +211,7 @@ function Main() {
 			})
 			.catch((err) => {
 				console.error(err);
-				enqueueSnackbar("Error occured while receiving events", {
+				enqueueSnackbar("Error occured while retrieving events", {
 					variant: "error",
 					anchorOrigin: { horizontal: "right", vertical: "top" },
 				});
@@ -219,7 +219,7 @@ function Main() {
 	};
 	const handleExecuteGetCourses = () => {
 		setResponseDisplay("");
-		enqueueSnackbar("SPARQL query started to receive events", {
+		enqueueSnackbar("Executing SPARQL query", {
 			variant: "info",
 			anchorOrigin: { horizontal: "right", vertical: "top" },
 		});
@@ -229,12 +229,12 @@ function Main() {
 				const data = res.data.replace("[", "").replace("]", "").split(", ");
 				setResponseDisplay(data);
 				if (Array.isArray(data) && data.length > 0) {
-					enqueueSnackbar("Events were received", {
+					enqueueSnackbar("Fetch completed", {
 						variant: "success",
 						anchorOrigin: { horizontal: "right", vertical: "top" },
 					});
 				} else {
-					enqueueSnackbar("No information were found", {
+					enqueueSnackbar("No information found", {
 						variant: "error",
 						anchorOrigin: { horizontal: "right", vertical: "top" },
 					});
@@ -242,7 +242,7 @@ function Main() {
 			})
 			.catch((err) => {
 				console.error(err);
-				enqueueSnackbar("Error occured while receiving events", {
+				enqueueSnackbar("Error occured while fetching events", {
 					variant: "error",
 					anchorOrigin: { horizontal: "right", vertical: "top" },
 				});
@@ -250,7 +250,7 @@ function Main() {
 	};
 	const handleExecuteGetEvents = () => {
 		setResponseDisplay("");
-		enqueueSnackbar("SPARQL query started to receive events", {
+		enqueueSnackbar("Executing SPQARL query events", {
 			variant: "info",
 			anchorOrigin: { horizontal: "right", vertical: "top" },
 		});
@@ -260,7 +260,7 @@ function Main() {
 				const data = res.data.replace("[", "").replace("]", "").split(", ");
 				setResponseDisplay(data);
 				if (Array.isArray(data) && data.length > 0) {
-					enqueueSnackbar("Events were received", {
+					enqueueSnackbar("Fetch completed", {
 						variant: "success",
 						anchorOrigin: { horizontal: "right", vertical: "top" },
 					});
@@ -273,7 +273,7 @@ function Main() {
 			})
 			.catch((err) => {
 				console.error(err);
-				enqueueSnackbar("Error occured while receiving events", {
+				enqueueSnackbar("Error occured while fetching events", {
 					variant: "error",
 					anchorOrigin: { horizontal: "right", vertical: "top" },
 				});
