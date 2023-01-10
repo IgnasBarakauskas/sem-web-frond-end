@@ -26,7 +26,7 @@
 	height: 100%;
 }
 .elementContainer__receive {
-	width: 45%;
+	width: 29%;
 	height: 100%;
 }
 .elementContainer__title {
@@ -42,6 +42,20 @@
 	width: 100%;
 	height: 100%;
 }
+.elementContainer__body--sameAs {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+.elementContainer__subBody {
+	width: 70%;
+	padding-left: 16px;
+}
+.executeButton {
+	width: 20%;
+	height: 80%;
+}
 .divider {
 	height: 1px;
 	background-color: #c9d1d9;
@@ -50,7 +64,7 @@
 .inputContainer {
 	display: flex;
 	justify-content: center;
-	padding: 32px 0;
+	padding: 16px 0;
 	width: 90%;
 }
 .receivedData {

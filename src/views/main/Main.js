@@ -1,6 +1,6 @@
 import { createTheme } from "@material-ui/core/styles";
 import { Button, TextField, ThemeProvider } from "@mui/material";
-import { DesktopDatePicker } from "@mui/x-date-pickers";
+import { DateTimePicker, DesktopDatePicker } from "@mui/x-date-pickers";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useState, useEffect } from "react";
@@ -19,15 +19,29 @@ function Main() {
 	const [month, setMonth] = useState("");
 	const [day, setDay] = useState("");
 	const [responseDisplay, setResponseDisplay] = useState("");
+	const [eventSameAsURI, setEventSameAsURI] = useState("");
+	const [eventStartDate, setEventStartDate] = useState("");
+	const [eventEndDate, setEventEndDate] = useState("");
+	const [eventStartDateDisplay, setEventStartDateDisplay] = useState("");
+	const [eventEndDateDisplay, setEventEndDateDisplay] = useState("");
+
 	const { enqueueSnackbar } = useSnackbar();
 
 	useEffect(() => {
 		const date = new Date();
-		setYear(date.getFullYear().toString());
-		let tempMonth = date.getMonth();
-		tempMonth = (tempMonth + 1).toString();
-		setMonth(tempMonth.length > 1 ? tempMonth : `0${tempMonth}`);
-		setDay(date.getDate().toString().length > 1 ? date.getDate().toString : `0${date.getDate()}`);
+		if (date.getFullYear() && date.getMonth() && date.getDate()) {
+			let tempMonth = date.getMonth();
+			const tempYear = date.getFullYear().toString();
+			tempMonth = (tempMonth + 1).toString();
+			const tempDay = date.getDate().toString().length > 1 ? date.getDate().toString() : `0${date.getDate()}`;
+			setYear(tempYear);
+			setMonth(tempMonth.length > 1 ? tempMonth : `0${tempMonth}`);
+			setDay(tempDay);
+		}
+		setEventStartDate(date);
+		setEventEndDate(date);
+		setEventStartDateDisplay(date);
+		setEventEndDateDisplay(date);
 	}, []);
 
 	const theme = createTheme({
@@ -35,6 +49,31 @@ function Main() {
 			type: "dark",
 		},
 	});
+	const handleEventSameAsURI = (e) => {
+		setEventSameAsURI(e.target.value);
+	};
+	const handleEventStartDate = (e) => {
+		let tempMonth = e.$M;
+		const tempYear = e.$y.toString();
+		tempMonth = (tempMonth + 1).toString();
+		const tempDay = e.$D.toString().length > 1 ? e.$D.toString() : `0${e.$D}`;
+		const tempHour = e.$H.toString().length > 1 ? e.$H.toString() : `0${e.$H}`;
+		const tempMinutes = e.$m.toString().length > 1 ? e.$m.toString() : `0${e.$m}`;
+		const finalTime = `${tempYear}-${tempMonth}-${tempDay}T${tempHour}:${tempMinutes}:00Z`;
+		setEventStartDate(finalTime);
+		setEventStartDateDisplay(e);
+	};
+	const handleEventEndDate = (e) => {
+		let tempMonth = e.$M;
+		const tempYear = e.$y.toString();
+		tempMonth = (tempMonth + 1).toString();
+		const tempDay = e.$D.toString().length > 1 ? e.$D.toString() : `0${e.$D}`;
+		const tempHour = e.$H.toString().length > 1 ? e.$H.toString() : `0${e.$H}`;
+		const tempMinutes = e.$m.toString().length > 1 ? e.$m.toString() : `0${e.$m}`;
+		const finalTime = `${tempYear}-${tempMonth}-${tempDay}T${tempHour}:${tempMinutes}:00Z`;
+		setEventEndDate(finalTime);
+		setEventEndDateDisplay(e);
+	};
 	const handleDownloadUrl = (e) => {
 		setDownloadUrl(e.target.value);
 	};
@@ -143,6 +182,41 @@ function Main() {
 				});
 			});
 	};
+	const handleExecuteSameAs = () => {
+		setResponseDisplay("");
+		enqueueSnackbar("Started searching for identical events", {
+			variant: "info",
+			anchorOrigin: { horizontal: "right", vertical: "top" },
+		});
+		axios
+			.post(`${url}discover-and-link-same-events`, {
+				startDate: eventStartDate,
+				endDate: eventEndDate,
+				location: eventSameAsURI,
+			})
+			.then((res) => {
+				if (res.data !== "No events found") {
+					const data = res.data.replace("[", "").replace("]", "").split(", ");
+					setResponseDisplay(data);
+					enqueueSnackbar("Identical events were received", {
+						variant: "success",
+						anchorOrigin: { horizontal: "right", vertical: "top" },
+					});
+				} else {
+					enqueueSnackbar("Identical events was not found", {
+						variant: "error",
+						anchorOrigin: { horizontal: "right", vertical: "top" },
+					});
+				}
+			})
+			.catch((err) => {
+				console.error(err);
+				enqueueSnackbar("Error occured while receiving events", {
+					variant: "error",
+					anchorOrigin: { horizontal: "right", vertical: "top" },
+				});
+			});
+	};
 	const handleExecuteGetCourses = () => {
 		setResponseDisplay("");
 		enqueueSnackbar("SPARQL query started to receive events", {
@@ -152,8 +226,9 @@ function Main() {
 		axios
 			.post(`${url}get-events`, { year, month, day })
 			.then((res) => {
-				setResponseDisplay(res.data.results.bindings);
-				if (res.data.results.bindings.length > 0) {
+				const data = res.data.replace("[", "").replace("]", "").split(", ");
+				setResponseDisplay(data);
+				if (Array.isArray(data) && data.length > 0) {
 					enqueueSnackbar("Events were received", {
 						variant: "success",
 						anchorOrigin: { horizontal: "right", vertical: "top" },
@@ -180,10 +255,11 @@ function Main() {
 			anchorOrigin: { horizontal: "right", vertical: "top" },
 		});
 		axios
-			.post(`${url}get-non-course-events`)
+			.get(`${url}get-non-course-events`)
 			.then((res) => {
-				setResponseDisplay(res.data.results.bindings);
-				if (res.data.results.bindings.length > 0) {
+				const data = res.data.replace("[", "").replace("]", "").split(", ");
+				setResponseDisplay(data);
+				if (Array.isArray(data) && data.length > 0) {
 					enqueueSnackbar("Events were received", {
 						variant: "success",
 						anchorOrigin: { horizontal: "right", vertical: "top" },
@@ -207,7 +283,7 @@ function Main() {
 		<div className={styles.body}>
 			<div className={styles.blockElementsContainer}>
 				<div className={`${styles.elementContainer} ${styles.elementContainer__send}`}>
-					<div className={styles.elementContainer__title}>Download file. Create and upload rdf</div>
+					<div className={styles.elementContainer__title}>Download file. Create and upload resource</div>
 					<div className={styles.divider} />
 					<ThemeProvider theme={theme}>
 						<div className={styles.elementContainer__body}>
@@ -230,7 +306,7 @@ function Main() {
 					</ThemeProvider>
 				</div>
 				<div className={`${styles.elementContainer} ${styles.elementContainer__send}`}>
-					<div className={styles.elementContainer__title}>Read file. Create and upload rdf</div>
+					<div className={styles.elementContainer__title}>Read file. Create and upload resource</div>
 					<div className={styles.divider} />
 					<ThemeProvider theme={theme}>
 						<div className={styles.elementContainer__body}>
@@ -274,7 +350,7 @@ function Main() {
 								<TextField
 									fullWidth
 									id="outlined-basic"
-									label="URL of attendee rdf"
+									label="URI of attendee resource"
 									value={attendeeURI}
 									variant="outlined"
 									onChange={handleAttendeeURI}
@@ -284,7 +360,7 @@ function Main() {
 								<TextField
 									fullWidth
 									id="outlined-basic"
-									label="URL of event rdf"
+									label="URI of event resource"
 									value={eventURI}
 									variant="outlined"
 									onChange={handleEventURI}
@@ -335,18 +411,55 @@ function Main() {
 						</div>
 					</ThemeProvider>
 				</div>
+				<div className={`${styles.elementContainer} ${styles.elementContainer__receive}`}>
+					<div className={styles.elementContainer__title}>Discover and link same events</div>
+					<div className={styles.divider} />
+					<ThemeProvider theme={theme}>
+						<div className={styles["elementContainer__body--sameAs"]}>
+							<div className={styles.elementContainer__subBody}>
+								<div className={styles.inputContainer}>
+									<DateTimePicker
+										ampm
+										inputFormat="DD/MM/YYYY hh:mm a"
+										label="Event start date and time"
+										renderInput={(params) => <TextField fullWidth {...params} />}
+										value={eventStartDateDisplay}
+										onChange={handleEventStartDate}
+									/>
+								</div>
+								<div className={styles.inputContainer}>
+									<DateTimePicker
+										ampm
+										inputFormat="DD/MM/YYYY hh:mm a"
+										label="Event end date and time"
+										renderInput={(params) => <TextField fullWidth {...params} />}
+										value={eventEndDateDisplay}
+										onChange={handleEventEndDate}
+									/>
+								</div>
+								<div className={styles.inputContainer}>
+									<TextField
+										fullWidth
+										id="outlined-basic"
+										label="URI of event resource"
+										value={eventSameAsURI}
+										variant="outlined"
+										onChange={handleEventSameAsURI}
+									/>
+								</div>
+							</div>
+							<Button className={styles.executeButton} variant="contained" onClick={handleExecuteSameAs}>
+								Execute
+							</Button>
+						</div>
+					</ThemeProvider>
+				</div>
 			</div>
 			<div className={styles.receivedData}>
 				{Array.isArray(responseDisplay) && responseDisplay.length > 0
 					? responseDisplay.map((res) => (
-							<a
-								key={res.sub.value}
-								className={styles.resultsURI}
-								href={res.sub.value}
-								rel="noreferrer"
-								target="_blank"
-							>
-								{res.sub.value}
+							<a key={res} className={styles.resultsURI} href={res} rel="noreferrer" target="_blank">
+								{res}
 							</a>
 					  ))
 					: "Received data will be displayed here"}
