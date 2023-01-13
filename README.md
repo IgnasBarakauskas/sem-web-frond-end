@@ -6,8 +6,8 @@ The backend application can be found at https://github.com/mezez/semantic-web-ca
 
 # Prerequisites
 
--   Node v16.13.2 or
--   yarn 1.22.19
+-   Node v16.13.2
+-   yarn 1.22.19 or npm
 
 # To start application
 
